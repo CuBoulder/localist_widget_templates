@@ -1,0 +1,112 @@
+{% unless settings.style == 'none' %}
+  {% partial 'platform_styles' %}
+{% endunless %}
+
+{% if settings.expand_descriptions %}
+  <script type="text/javascript">
+    mc_$$ID$$_util = (function() {
+      function getEl(el) {
+        if('tagName' in el) return el;
+        return document.getElementById(el);
+      }
+
+      function upTag(el, tag) {
+        var e;
+        if(e = getEl(el)) {
+          while(e) {
+            if(e.tagName.toLowerCase() == tag.toLowerCase()) return e;
+            e = e.parentNode;
+          }
+          return null;
+        } else {
+          return null;
+        }
+      }
+
+      function hasClass(el, klass) {
+        if(!el) return;
+        var classes = el.className;
+        return (classes.length > 0 && (classes == klass ||
+          new RegExp("(^|\\s)" + klass + "(\\s|$)").test(classes)));
+      }
+
+      function downClass(el, tag, klass) {
+        var e = getEl(el);
+        if(!e) return null;
+        var els = e.getElementsByTagName(tag);
+        var i = 0;
+        for(i = 0; i < els.length; i++) {
+          e = els[i];
+          if(hasClass(e, klass)) return e;
+        }
+        return null;
+      }
+
+      function toggleVisibility(el) {
+        var e;
+        if(e = getEl(el)) {
+          if(e.style.display == 'none') {
+            e.style.display = '';
+          } else {
+            e.style.display = 'none';
+          }
+        }
+      }
+
+      return {
+        toggle: function(el) {
+          toggleVisibility(downClass(upTag(el, 'li'), 'div', 'lww'));
+        }
+      };
+    })();
+  </script>
+{% endif %}
+
+{% if current_user %}<!-- logged in -->{% endif %}
+<div id=lw>
+  <div class=lw>
+    <ul id=lwe>
+      {% if events == empty %}
+        <li>{{ site.snippets.widget_nocontent }}</li>
+      {% else %}
+        {% for event in events %}
+          <li class=lwe>
+            <div class=lwn>
+              <span class=lwn0>
+                {% event_time event date_format:settings.date_format time_format:settings.time_format short_time_format:settings.short_time_format %}
+                {% if show_date_ranges and event.has_many_future_instances %}
+                  - {{ event.last_instance.starts_at | date:settings.date_format }}
+                {% endif %}
+              </span>
+              {% if settings.hide_descriptions and settings.hide_images != true %}
+                <span class=lwi1><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:settings.image_size class:'lwi' %}</a></span>
+              {% endif %}
+
+              <a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a>
+            </div>
+            {% if settings.expand_descriptions %}<div class=lww style="display:none">{% endif %}
+            {% unless settings.hide_descriptions %}
+              <div class=lwd>{% unless settings.hide_images %}<span class=lwi0><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:settings.image_size class:'lwi' %}</a></span>{% endunless %}{% item_description event %}</div>
+            {% endunless %}
+            {% if event.event_type == 'event' %}
+              {% if event.place != empty and event.location_name != blank %}
+                <div class=lwl><span class=lwl0>Location:</span>
+                  {% if event.place %}
+                    <a href="{{ event.place.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{{ event.place.visible_name }}</a>
+                  {% else %}
+                    <a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{{ event.location_name }}</a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endif %}
+
+            {% if settings.show_keywords %}
+              <div class=lwk>{{ event.keywords | join:", " }}</div>
+            {% endif %}
+            {% if settings.expand_descriptions %}</div>{% endif %}
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</div>

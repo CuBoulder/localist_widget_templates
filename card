@@ -1,0 +1,560 @@
+{% comment %}
+The Card widget was created from your inspiration. Hope College (hope.edu) originally created a widget that pulled from the Localist Calendar API and presented events in a Pinterest-style card layout. Many Localist customers requested that something similar be created in widget form. Here it is! Thanks to Hope College for creating such a cool application on top of the Localist API.
+
+#################################
+START MAKE COLOR/FONT CHANGES HERE
+you can change colors and fonts in this section rather than modifying CSS directly below
+{% endcomment %}
+
+{% assign date_color = '#5482ab' %}
+{% assign card_hover = 'rgba(84,130,171,0.8)' %}
+
+{% assign font_family = '"Helvetica Neue",Helvetica,Arial,sans-serif' %}
+{% assign desc_font_family = 'Georgia,serif' %}
+
+{% comment %}
+END MAKE COLOR/FONT CHANGES HERE
+#################################
+{% endcomment %}
+
+
+{% capture first_transition %}
+  -webkit-transition: opacity .10s ease-out,left .5s ease-out;
+  -moz-transition: opacity .10s ease-out,left .5s ease-out;
+  transition: opacity .10s ease-out,left .5s ease-out;
+{% endcapture %}
+
+{% capture second_transition %}
+  -webkit-transition: all .10s ease-out;
+  -moz-transition: all .10s ease-out;
+  transition: all .10s ease-out;
+{% endcapture %}
+
+{% capture second_transition %}
+  -webkit-transition: all .10s ease-out;
+  -moz-transition: all .10s ease-out;
+  transition: all .10s ease-out;
+{% endcapture %}
+
+{% capture third_transition %}
+  -webkit-transition: opacity .10s .10s ease-out,-webkit-transform .10s .10s ease-out,visibility .10s .10s ease-out;
+  -moz-transition: opacity .10s .10s ease-out,-moz-transform .10s .10s ease-out,visibility .10s .10s ease-out;
+  transition: opacity .10s .10s ease-out,transform .10s .10s ease-out,visibility .10s .10s ease-out;
+{% endcapture %}
+
+{% capture image_transform %}
+  -webkit-transform-origin: center center;
+  -moz-transform-origin: center center;
+  -ms-transform-origin: center center;
+  -o-transform-origin: center center;
+  transform-origin: center center;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+{% endcapture %}
+
+{% capture second_image_transform %}
+  -webkit-transform: scale(1.75) translateX(-30%) translateY(16%);
+  -moz-transform: scale(1.75) translateX(-30%) translateY(16%);
+  -ms-transform: scale(1.75) translateX(-30%) translateY(16%);
+  -o-transform: scale(1.75) translateX(-30%) translateY(16%);
+  transform: scale(1.75) translateX(-30%) translateY(16%);
+{% endcapture %}
+
+
+<!-- begin code -->
+<style type="text/css">
+.localist-widget-hl ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: {{ font_family }};
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.localist-widget-hl .event-list {
+  clear: both;
+  position: relative;
+  {{ first_transition }}
+}
+
+.localist-widget-hl li.event {
+  {{ third_transition }}
+}
+
+.localist-widget-hl .event-list li {
+  margin-bottom: 20px;
+}
+
+.localist-widget-hl .event-card {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 25px;
+  padding: 0;
+  position: relative;
+  background: #fff;
+  border: 2px solid #efefef;
+  color: #989694;
+  font-size: .8125rem;
+}
+
+.localist-widget-hl .event-overview {
+  {{ second_transition }}
+}
+
+.localist-widget-hl .event-details {
+  background: {{ card_hover }};
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  {{ second_transition }}
+}
+
+.localist-widget-hl dl {
+  border: 0;
+  font-family: inherit;
+  font-size: 100%;
+  font-style: inherit;
+  font-weight: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+.localist-widget-hl .event-specs dt {
+  background-position: center;
+  background-repeat: no-repeat;
+  clear: both;
+  margin-right: 15px;
+  overflow: hidden;
+  text-indent: -9999px;
+  width: 40px;
+  float: left;
+}
+
+.localist-widget-hl .event-specs dt,.event-specs dd {
+  padding: 14px 0 17px;
+}
+
+.localist-widget-hl .event-specs dd {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  position: relative;
+  margin: 0;
+}
+
+.localist-widget-hl .event-detail-title {
+  display: block;
+  line-height: 1.1875em;
+  margin-bottom: 1.5em;
+  font-size: 13px;
+}
+
+.localist-widget-hl .event-specs dd:before {
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: 1px;
+  height: 100%;
+  background: rgba(255,255,255,0.15);
+  content: '';
+}
+
+.localist-widget-hl strong {
+  font-weight: 700;
+}
+
+.localist-widget-hl .event-specs {
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-width: 1px 0;
+  line-height: normal;
+  overflow: hidden;
+}
+
+.localist-widget-hl .cover {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  text-indent: -9999px;
+  top: 0;
+  width: 100%;
+}
+
+.localist-widget-hl .event-card header {
+  overflow: hidden;
+  position: relative;
+  height: 13.538em;
+}
+
+.localist-widget-hl .event-card:hover .event-details {
+  opacity: 1;
+  visibility: visible;
+}
+
+.localist-widget-hl .event-list .event-overview .content {
+  height: 7.615384615em;
+  border: 1px solid #efefef;
+  border-width: 0 1px;
+  padding: 23px 20px 19px;
+}
+
+.localist-widget-hl .event-card:hover .event-title,.localist-widget-hl .event-card:hover .event-short-date,.localist-widget-hl .event-card:hover .content:before {
+  opacity: 0;
+  text-decoration: none;
+  visibility: hidden;
+}
+
+.localist-widget-hl .event-card .content:before {
+  background: #fff;
+  bottom: 0;
+  content: '';
+  height: 17px;
+  left: 1px;
+  position: absolute;
+  right: 1px;
+}
+
+.localist-widget-hl .event-card:hover .event-title,.localist-widget-hl .event-card:hover .event--date,.localist-widget-hl .event-card:hover .content:before {
+  opacity: 0;
+  text-decoration: none;
+  visibility: hidden;
+}
+
+.localist-widget-hl .event-card .content p {
+  overflow: hidden;
+  margin: 0;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+  line-height: 1.5em;
+  font-family: {{ desc_font_family }};
+}
+
+.localist-widget-hl .event-title {
+  background: rgba(0,0,0,0.5) left top;
+  bottom: 0;
+  color: #fff;
+  font-weight: 800;
+  left: 0;
+  overflow: hidden;
+  padding: 7px 20px 5px;
+  position: absolute;
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  z-index: 1;
+  line-height: 1.875rem;
+  font-size: .8125rem;
+  font-family: {{ font_family }};
+  margin: 0;
+  outline: 0;
+  vertical-align: baseline;
+  border: 0;
+  {{ second_transition }}
+}
+
+.localist-widget-hl .event-short-date {
+
+  background: {{ date_color }};
+  position: absolute;
+  width: 2.777777778em;
+  height: 2.777777778em;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: .333333333em 0 0;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.125rem;
+  line-height: 1.111111111em;
+  font-family: : {{ font_family }};
+  text-align: center;
+  text-transform: uppercase;
+  {{ second_transition }}
+}
+
+.localist-widget-hl .event-card:hover .event-img {
+  {{ second_image_transform }}
+}
+
+.localist-widget-hl .event-card .content:before {
+  position: absolute;
+  background: #fff;
+  left: 1px;
+  bottom: 0;
+  right: 1px;
+  content: '';
+  height: 17px;
+}
+
+.localist-widget-hl .event-img {
+  position: relative;
+  width: auto;
+  height: auto;
+  min-height: 100%;
+  min-width: 100%;
+  display: block;
+  left: 50%;
+  {{ image_transform }}
+  {{ second_transition }}
+}
+
+.localist-widget-hl .event-card img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.localist-widget-hl .event-card:hover .event-title,.localist-widget-hl .event-card:hover .localist-widget-hl .event-short-date,.localist-widget-hl .event-card:hover .content:before {
+  opacity: 0;
+  text-decoration: none;
+  visibility: hidden;
+}
+
+.localist-widget-hl .event-card .event-short-date {
+  background: {{ date_color }};
+}
+
+.localist-widget-hl .event-card:hover header {
+  overflow: visible;
+}
+
+.localist-widget-hl .event-card:hover {
+  border-color: {{ card_hover }};
+}
+
+.localist-widget-hl .event-card:hover .event-overview {
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.localist-widget-hl .event-list .event-card {
+  height: 21.153846154em;
+}
+
+.localist-widget-hl .event-short-date abbr {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.181818182em;
+  border: 0 none;
+}
+
+.localist-widget-hl * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.localist-widget-hl .pin {
+  width: 17px;
+  height: 17px;
+  border-radius: 48% 50% 50% 0;
+  background: #fff;
+  transform: rotate(-45deg);
+  float: left;
+  margin-left: 10px;
+  text-indent: initial;
+  -webkit-backface-visibility: hidden;
+}
+
+.localist-widget-hl .pin:after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin: 5px 0 0 6px;
+  background: {{ card_hover }};
+  border-radius: 50%;
+  position: absolute;
+}
+
+.localist-widget-hl .clock {
+  float: left;
+  margin-top: 0;
+  border: 2px solid #fff;
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  border-radius: 100%;
+  height: 18px;
+  width: 18px;
+  margin-left: 8px;
+  -webkit-backface-visibility: hidden;
+}
+
+.localist-widget-hl .clock:before {
+  height: 4px;
+  left: 8px;
+  top: 4px;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+  border: 1px solid #fff;
+  content: '';
+  position: absolute;
+}
+
+.localist-widget-hl .clock:after {
+  height: 4px;
+  left: 6px;
+  top: 2px;
+  border: 1px solid #fff;
+  content: '';
+  position: absolute;
+}
+
+//
+@media only screen and (min-width: 30em) {
+  .localist-widget-hl .event-list>li:nth-child(2n+1) {
+    clear: left;
+  }
+
+  .localist-widget-hl .event-list>li:not(:nth-child(2n)) {
+    margin-right: 5%;
+  }
+}
+
+@media only screen and (min-width: 45em) {
+  .localist-widget-hl .event-list>li:nth-child(3n+1) {
+    clear: left;
+  }
+
+  .localist-widget-hl .event-list>li:not(:nth-child(3n)) {
+    margin-right: 3.125%;
+  }
+
+  .localist-widget-hl .event-list li:nth-child(2n+1):not(:nth-child(3n+1)) {
+    clear: none;
+  }
+
+  .localist-widget-hl .event-list>li:nth-child(3n) {
+    margin-right: 0;
+  }
+}
+
+@media only screen and (min-width: 62.5em) {
+  .localist-widget-hl .event-list>li:not(:nth-child(5n)) {
+    margin-right: 1.66667%;
+  }
+
+  .localist-widget-hl .event-list>li:nth-child(5n+1) {
+    clear: left;
+  }
+
+  .localist-widget-hl .event-list li:nth-child(3n+1) {
+    clear: none;
+  }
+
+  .localist-widget-hl .event-list>li:nth-child(5n) {
+    margin-right: 0;
+  }
+}
+
+@media only screen and (min-width: 30em) {
+  .localist-widget-hl .event-list>li {
+    float: left;
+    margin-bottom: 5%;
+    width: 47.5%;
+  }
+}
+
+@media only screen and (min-width: 45em) {
+  .localist-widget-hl .event-list>li {
+    float: left;
+    margin-bottom: 3.125%;
+    width: 31.25%;
+  }
+}
+
+@media only screen and (min-width: 62.5em) {
+  .localist-widget-hl .event-list>li {
+    float: left;
+    margin-bottom: 1.66667%;
+    width: 18.66667%;
+  }
+}
+
+</style>
+
+<div class="localist-widget-hl">
+
+    <ol class="event-list">
+        {% if events == empty %}
+        <li class="lw lw_event_item nocontent">
+            <div class="lw_event_item_title">{{ site.snippets.widget_nocontent }}</div>
+        </li>
+        {% else %}
+            {% for event in events %}
+            <li class="event">
+                <article class="event-card">
+                    <div class="event-overview">
+                        <header>
+                            <h2 class="event-title">{{ event.name }}</h2>
+                            <time class="event-short-date" datetime="{% event_time event order:"date" date_format:"Y-m-d" short_time_format:"Y-m-d" %}">
+                                {% event_time event order:"date" date_format:"d" date_format_year:"d" short_time_format:"d" %}&nbsp;<abbr title="{% event_time event order:"date" date_format:"F" short_time_format:"F" %}">
+                                    {% event_time event order:"date" date_format:"M" date_format_year:"M Y" short_time_format:"M" %}
+                                </abbr>
+                            </time>
+                            {% photo_for event size:square_300 width:225 height:225 class:'event-img' %}
+                        </header>
+                        <div class="content"><p>{% item_description event %}</p></div>
+                    </div>
+                    <div class="event-details">
+                        <strong class="event-detail-title">{{ event.name }}</strong>
+                        <dl class="event-specs">
+                            <dt class="event-date">Date<div class="clock"></div></dt>
+                            <dd class="event-date">
+                                <time datetime="{% event_time event order:"date" date_format:"Y-m-d" short_time_format:"Y-m-d" %}">
+                                    {% event_time event order:"date,time" date_format:"l, F j" date_format_year:"l, F j, Y" time_format: "g:i a" short_time_format:"g:i a" separator:" <br> " %}
+                                </time>
+                            </dd>
+
+                            {% if event.place.visible_name != blank or event.location_name != blank %}
+                                <dt class="event-location">Location<div class="pin"></div></dt>
+                                <dd class="event-location">
+                                    {% if event.place.visible_name != blank %}
+                                    {{ event.place.visible_name }}
+                                    {% else %}
+                                    {{ event.location_name }}
+                                </dd>
+                                {% endif %}
+                            {% endif %}
+                        </dl>
+                    </div>
+                    <a class="cover" href="{{ event.url }}" {% if settings.target_blank %} target="_blank"{% endif %}>{{ event.name }}</a>
+                    {% if event.location_name or event.place.visible_name or event.start_time %}
+                        <span class="start-time location">
+                            {% if event.start_time %}
+                            {% event_time event order:"time" time_format:"h:i a" short_time_format:"h:i a" %}
+                            {% if event.place.visible_name != blank or event.location_name != blank %} - {% endif %}
+                            {% endif %}
+                            {% if event.place.visible_name != blank or event.location_name != blank %}
+                                {% if event.place.visible_name != blank %}
+                                {{ event.place.visible_name }}
+                                {% else %}
+                                {{ event.location_name }}
+                                {% endif %}
+                            {% endif %}
+                        </span>
+                    {% endif %}
+
+                </article>
+            </li>
+            {% endfor %}
+        {% endif %}
+    </ol>
+</div>
