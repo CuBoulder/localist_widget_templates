@@ -1,0 +1,176 @@
+{% unless settings.style == 'none' %}
+  {% partial 'platform_styles' %}
+{% endunless %}
+
+{% if settings.expand_descriptions %}
+  <script type="text/javascript">
+    mc_$$ID$$_util = (function() {
+      function getEl(el) {
+        if('tagName' in el) return el;
+        return document.getElementById(el);
+      }
+
+      function upTag(el, tag) {
+        var e;
+        if(e = getEl(el)) {
+          while(e) {
+            if(e.tagName.toLowerCase() == tag.toLowerCase()) return e;
+            e = e.parentNode;
+          }
+          return null;
+        } else {
+          return null;
+        }
+      }
+
+      function hasClass(el, klass) {
+        if(!el) return;
+        var classes = el.className;
+        return (classes.length > 0 && (classes == klass ||
+          new RegExp("(^|\\s)" + klass + "(\\s|$)").test(classes)));
+      }
+
+      function downClass(el, tag, klass) {
+        var e = getEl(el);
+        if(!e) return null;
+        var els = e.getElementsByTagName(tag);
+        var i = 0;
+        for(i = 0; i < els.length; i++) {
+          e = els[i];
+          if(hasClass(e, klass)) return e;
+        }
+        return null;
+      }
+
+      function toggleVisibility(el) {
+        var e;
+        if(e = getEl(el)) {
+          if(e.style.display == 'none') {
+            e.style.display = '';
+          } else {
+            e.style.display = 'none';
+          }
+        }
+      }
+
+      return {
+        toggle: function(el) {
+          toggleVisibility(downClass(upTag(el, 'li'), 'div', 'lww'));
+        }
+      };
+    })();
+  </script>
+{% endif %}
+<style>
+  .lwn {
+    font-weight:normal;
+  }
+  .lwd {}
+  .le-photo {
+    float:right;
+    margin:0 0 0 10px;
+  }
+  .le-event-title {
+
+  }
+  .le-list,
+  .le-event {
+    margin:0;
+    padding:0;
+  }
+  .le-wrapper {
+    margin-bottom:10px;
+    padding-bottom:10px;
+    border-bottom:1px solid #e0e0e0;
+    overflow:hidden;
+  }
+  .le-date {
+    float: left;
+    width: 40px;
+    margin-right: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #f7f7f7;
+  }
+  .le-date-month {
+    background-color: #D24637;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    padding:5px
+  }
+  .le-date-day {
+    font-weight: 700;
+    font-size: 14px;
+    border: 1px solid #e7e7e7;
+    border-top: none;
+    color: #333;
+    padding:5px
+  }
+  .le-event-content {
+    overflow:hidden;
+  }
+  .le-date-time,
+  .le-description {
+    font-size: 85%;
+    padding-top: 5px;
+  }
+</style>
+{% if current_user %}<!-- logged in -->{% endif %}
+<div id=lw>
+  <div class=lw>
+    <ul id=lwe class=le-list>
+      {% if events == empty %}
+        <li>{{ site.snippets.widget_nocontent }}</li>
+      {% else %}
+        {% for event in events %}
+          <li class=le-event>
+            <div class=le-wrapper>
+              {% unless settings.hide_images %}<div class=le-photo><span class=lwi0><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:settings.image_size class:'le-image' %}</a></span></div>{% endunless %}
+
+              <div class=le-date>
+                <div class=le-date-month>{% event_time event order:"date" date_format:"M"  %}</div>
+                <div class=le-date-day>{% event_time event order:"date" date_format:"j"  %}</div>
+              </div>
+
+              <div class=le-event-content>
+                <div class=le-event-title><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a></div>
+
+
+                {% if settings.show_times %}
+                  <div class=le-date-time>
+                  {% if event.start_time %}
+                    {% event_time event order:"time" time_format: "g:i a" short_time_format:"g:i a" %}
+                  {% endif %}
+                  </div>
+                {% endif %}
+
+
+              {% if settings.expand_descriptions %}<div class=lww style="display:none">{% endif %}
+              {% unless settings.hide_descriptions %}
+                <div class=le-description>
+                  {% if event.event_type == 'event' %}
+                  {% if event.place != empty and event.location_name != blank %}
+                    <div class=le-location>
+                      {% if event.place %}
+                        {{ event.place.visible_name }}
+                      {% else %}
+                        {{ event.location_name }}
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endif %}
+                  {% item_description event %}
+                </div>
+              {% endunless %}
+            {% if settings.expand_descriptions %}</div>{% endif %}
+              </div>
+
+            </div>
+
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
