@@ -70,9 +70,7 @@
     float:right;
     margin:0 0 0 10px;
   }
-  .le-event-title {
-    font-weight:bold;
-  }
+
   .le-list,
   .le-event {
     margin:0;
@@ -83,6 +81,11 @@
     padding-bottom:10px;
     border-bottom:1px solid #e0e0e0;
     overflow:hidden;
+  }
+  .le-date-time,
+  .le-description {
+    font-size: 85%;
+    padding-top: 5px;
   }
 </style>
 {% if current_user %}<!-- logged in -->{% endif %}
@@ -95,21 +98,21 @@
         {% for event in events %}
           <li class=le-event>
             <div class=le-wrapper>
-              <div class=le-photo>{% unless settings.hide_images %}<span class=lwi0><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:settings.image_size class:'lwi' %}</a></span>{% endunless %}</div>
-              
-              
+              {% unless settings.hide_images %}<div class=le-photo><span class=lwi0><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:settings.image_size class:'lwi' %}</a></span></div>{% endunless %}
+
+
 
               <div class=le-event-title><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a></div>
-              
+
               <div class=le-date-time>
                 {% if settings.show_times %}
                   {% if event.start_time %}
-                    {% event_time event order:"time" time_format:settings.time_format short_time_format:settings.short_time_format %} &bull; 
+                    {% event_time event order:"time" time_format:settings.time_format short_time_format:settings.short_time_format %} &bull;
                   {% endif %}
                 {% endif %}
                 {% event_time event order:"date" date_format:"l n/j"  %}
               </div>
-            
+
               {% if settings.expand_descriptions %}<div class=lww style="display:none">{% endif %}
               {% unless settings.hide_descriptions %}
                 <div class=le-description>
@@ -128,9 +131,9 @@
                 </div>
               {% endunless %}
             {% if settings.expand_descriptions %}</div>{% endif %}
-            
+
             </div>
-            
+
           </li>
         {% endfor %}
       {% endif %}
