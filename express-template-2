@@ -94,12 +94,12 @@
   .template-2 .le-date-month {
     background-color: #D24637;
     color: #fff;
-    font-weight: 600;
+    font-weight: bold;
     font-size: 12px;
     padding:2px
   }
   .template-2 .le-date-day {
-    font-weight: 700;
+    font-weight: bold;
     font-size: 14px;
     border: 1px solid #e7e7e7;
     border-top: none;

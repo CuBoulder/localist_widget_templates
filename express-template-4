@@ -120,13 +120,13 @@
   .template-4  .le-date-month {
     background-color: #D24637;
     color: #fff;
-    font-weight: 600;
+    font-weight: bold;
     font-size: 14px;
     padding:5px;
   }
   .template-4  .le-date-day {
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 21px;
     border: 1px solid #e7e7e7;
     border-top: none;
     color: #333;
@@ -178,29 +178,33 @@
                 <div class="le-event-title"><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a></div>
 
 
-                {% if settings.show_times %}
-                  <div class="le-date-time">
-                  {% if event.start_time %}
-                    {% event_time event order:"time" time_format: "g:i a" short_time_format:"g:i a" %}
-                  {% endif %}
-                  </div>
-                {% endif %}
+
 
 
               {% if settings.expand_descriptions %}<div class=lww style="display:none">{% endif %}
               {% unless settings.hide_descriptions %}
                 <div class="le-description">
+
+                  <div class="le-time-location">
+                  {% if settings.show_times %}
+                    {% if event.start_time %}
+                      {% event_time event order:"time" time_format: "g:i a" short_time_format:"g:i a" %}
+                    {% endif %}
+                  {% endif %}
+
                   {% if event.event_type == 'event' %}
-                  {% if event.place != empty and event.location_name != blank %}
-                    <div class="le-location">
+                    {% if event.place != empty and event.location_name != blank %}
                       {% if event.place %}
                         {{ event.place.visible_name }}
                       {% else %}
                         {{ event.location_name }}
                       {% endif %}
-                    </div>
+                    {% endif %}
                   {% endif %}
-                {% endif %}
+                  </div>
+
+
+
                   {% item_description event %}
                 </div>
               {% endunless %}
