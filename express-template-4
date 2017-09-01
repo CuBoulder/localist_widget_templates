@@ -62,43 +62,102 @@
   </script>
 {% endif %}
 <style>
-  .template-1 .lwn {
+  .template-4 .lwn {
     font-weight:normal;
   }
-  .template-1 .le-photo {
+  .template-4  .le-photo {
     float:right;
     margin:0 0 0 10px;
   }
-
-  .template-1 .le-list,
-  .template-1 .le-event {
+  .template-4 .le-event,
+  .template-4 .le-list {
+    list-style:none;
+    list-style-image:none;
     margin:0;
     padding:0;
   }
-  .template-1 .le-wrapper {
-    margin-bottom:10px;
-    padding-bottom:10px;
-    border-bottom:1px solid #e0e0e0;
+  .template-4  .le-list {
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    margin:0 -20px;
+  }
+  .template-4  .le-event {
+    padding: 0 20px;
+    width:100%;
+  }
+  @media screen and (min-width:768px) {
+    .template-4  .le-event {
+      width:50%;
+    }
+  }
+  @media screen and (min-width:960px) {
+    .template-4  .le-event {
+      width:25%;
+    }
+  }
+
+
+  .template-4  .le-wrapper {
+    margin-bottom:20px;
     overflow:hidden;
   }
-  .template-1 .le-date-time,
-  .template-1 .le-description {
+  .template-4 .le-date-wrapper {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-bottom:20px;
+  }
+  .template-4  .le-date {
+    width: 70px;
+    margin-right: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #f7f7f7;
+  }
+  .template-4  .le-date-month {
+    background-color: #D24637;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding:5px;
+  }
+  .template-4  .le-date-day {
+    font-weight: 600;
+    font-size: 16px;
+    border: 1px solid #e7e7e7;
+    border-top: none;
+    color: #333;
+    padding:10px 5px;
+  }
+  .template-4  .le-event-content {
+    overflow:hidden;
+    text-align:center;
+  }
+  .template-4  .le-date-time,
+  .template-4  .le-description {
     font-size: 85%;
     padding-top: 5px;
   }
-  .template-1 img.le-image {
+  .template-4  img.le-image {
     width:50px;
     height:auto;
   }
   @media screen and (min-width:768px) {
-    .template-1 img.le-image {
+    .template-4  img.le-image {
       width:80px;
       height:auto;
     }
   }
+  .template-4 .le-event-title {
+    font-weight:bold;
+    font-size:150%;
+  }
 </style>
 {% if current_user %}<!-- logged in -->{% endif %}
-<div class="template-1">
+<div class="template-4">
   <div class="localist-wrapper">
     <ul id="lwe" class="le-list">
       {% if events == empty %}
@@ -107,26 +166,26 @@
         {% for event in events %}
           <li class="le-event">
             <div class="le-wrapper">
-              {% unless settings.hide_images %}
-                {% if event.photo %}
 
-
-                  <div class="le-photo"><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:"medium" class:'le-image' %}</a></div>
-                {% endif %}
-              {% endunless %}
-
-
-
-              <div class="le-event-title"><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a></div>
-
-              <div class="le-date-time">
-                {% if settings.show_times %}
-                  {% if event.start_time %}
-                    {% event_time event order:"time" time_format:settings.time_format short_time_format:settings.short_time_format %} &bull;
-                  {% endif %}
-                {% endif %}
-                {% event_time event order:"date" date_format:"l n/j"  %}
+              <div class="le-date-wrapper">
+                <div class="le-date">
+                  <div class="le-date-month">{% event_time event order:"date" date_format:"M"  %}</div>
+                  <div class="le-date-day">{% event_time event order:"date" date_format:"j"  %}</div>
+                </div>
               </div>
+
+              <div class="le-event-content">
+                <div class="le-event-title"><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a></div>
+
+
+                {% if settings.show_times %}
+                  <div class="le-date-time">
+                  {% if event.start_time %}
+                    {% event_time event order:"time" time_format: "g:i a" short_time_format:"g:i a" %}
+                  {% endif %}
+                  </div>
+                {% endif %}
+
 
               {% if settings.expand_descriptions %}<div class=lww style="display:none">{% endif %}
               {% unless settings.hide_descriptions %}
@@ -146,6 +205,7 @@
                 </div>
               {% endunless %}
             {% if settings.expand_descriptions %}</div>{% endif %}
+              </div>
 
             </div>
 

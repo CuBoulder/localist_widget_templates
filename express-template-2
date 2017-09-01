@@ -62,29 +62,28 @@
   </script>
 {% endif %}
 <style>
-  .lwn {
+  .template-2 .lwn {
     font-weight:normal;
   }
-  .lwd {}
-  .le-photo {
+  .template-2 .le-photo {
     float:right;
     margin:0 0 0 10px;
   }
-  .le-event-title {
+  .template-2 .le-event-title {
 
   }
-  .le-list,
-  .le-event {
+  .template-2 .le-list,
+  .template-2 .le-event {
     margin:0;
     padding:0;
   }
-  .le-wrapper {
+  .template-2 .le-wrapper {
     margin-bottom:10px;
     padding-bottom:10px;
     border-bottom:1px solid #e0e0e0;
     overflow:hidden;
   }
-  .le-date {
+  .template-2 .le-date {
     float: left;
     width: 40px;
     margin-right: 10px;
@@ -92,14 +91,14 @@
     text-transform: uppercase;
     background-color: #f7f7f7;
   }
-  .le-date-month {
+  .template-2 .le-date-month {
     background-color: #D24637;
     color: #fff;
     font-weight: 600;
     font-size: 12px;
     padding:2px
   }
-  .le-date-day {
+  .template-2 .le-date-day {
     font-weight: 700;
     font-size: 14px;
     border: 1px solid #e7e7e7;
@@ -107,34 +106,44 @@
     color: #333;
     padding:2px
   }
-  .le-event-content {
+  .template-2 .le-event-content {
     overflow:hidden;
   }
-  .le-date-time,
-  .le-description {
+  .template-2 .le-date-time,
+  .template-2 .le-description {
     font-size: 85%;
     padding-top: 5px;
   }
+  .template-2 img.le-image {
+    width:50px;
+    height:auto;
+  }
+  @media screen and (min-width:768px) {
+    .template-2 img.le-image {
+      width:80px;
+      height:auto;
+    }
+  }
 </style>
 {% if current_user %}<!-- logged in -->{% endif %}
-<div id=lw>
-  <div class=lw>
-    <ul id=lwe class=le-list>
+<div class="template-2">
+  <div class="localist-wrapper">
+    <ul id="lwe" class="le-list">
       {% if events == empty %}
         <li>{{ site.snippets.widget_nocontent }}</li>
       {% else %}
         {% for event in events %}
-          <li class=le-event>
-            <div class=le-wrapper>
-              {% unless settings.hide_images %}<div class=le-photo><span class=lwi0><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:settings.image_size class:'le-image' %}</a></span></div>{% endunless %}
+          <li class="le-event">
+            <div class="le-wrapper">
+              {% unless settings.hide_images %}<div class=le-photo><span class=lwi0><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:"medium" class:'le-image' %}</a></span></div>{% endunless %}
 
-              <div class=le-date>
-                <div class=le-date-month>{% event_time event order:"date" date_format:"M"  %}</div>
-                <div class=le-date-day>{% event_time event order:"date" date_format:"j"  %}</div>
+              <div class="le-date">
+                <div class="le-date-month">{% event_time event order:"date" date_format:"M"  %}</div>
+                <div class="le-date-day">{% event_time event order:"date" date_format:"j"  %}</div>
               </div>
 
-              <div class=le-event-content>
-                <div class=le-event-title><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a></div>
+              <div class="le-event-content">
+                <div class="le-event-title"><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a></div>
 
 
                 {% if settings.show_times %}
@@ -148,10 +157,10 @@
 
               {% if settings.expand_descriptions %}<div class=lww style="display:none">{% endif %}
               {% unless settings.hide_descriptions %}
-                <div class=le-description>
+                <div class="le-description">
                   {% if event.event_type == 'event' %}
                   {% if event.place != empty and event.location_name != blank %}
-                    <div class=le-location>
+                    <div class="le-location">
                       {% if event.place %}
                         {{ event.place.visible_name }}
                       {% else %}

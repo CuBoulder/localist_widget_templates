@@ -62,62 +62,67 @@
   </script>
 {% endif %}
 <style>
-  .lwn {
+  .template-3 .lwn {
     font-weight:normal;
   }
-  .lwd {}
-  .le-photo {
+  .template-3 .le-photo {
     float:right;
     margin:0 0 0 10px;
   }
-  .le-event-title {
+  .template-3 .le-event-title {
     font-weight:bold;
   }
-  .le-list,
-  .le-event {
+  .template-3 .le-list,
+  .template-3 .le-event {
     margin:0;
     padding:0;
   }
-  .le-wrapper {
+  .template-3 .le-wrapper {
     margin-bottom:10px;
     padding-bottom:10px;
     border-bottom:1px solid #e0e0e0;
     overflow:hidden;
   }
-  ul.le-list {
+  .template-3 ul.le-list {
     display:table;
     border-collapse: collapse;
   }
-  ul.le-list li.le-event {
+  .template-3 ul.le-list li.le-event {
     display:table-row;
-    border: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
   }
-  .le-cell {
+  .template-3 .le-cell {
     display: table-cell;
     padding: 10px;
-    border: 1px solid #e0e0e0;
+    width:100%;
   }
-  .le-cell-date {
+  .template-3 .le-cell-date {
     border-right:none;
+    white-space: nowrap;
   }
-  .le-cell-title {
+  .template-3 .le-cell-title {
     border-left:none;
+    font-weight:bold;
   }
 </style>
 {% if current_user %}<!-- logged in -->{% endif %}
-<div id=lw>
-  <div class=lw le-table>
-    <ul id=lwe class=le-list>
+<div class="template-3">
+  <div class="localist-wrapper le-table">
+    <ul id="lwe" class="le-list">
       {% if events == empty %}
         <li>{{ site.snippets.widget_nocontent }}</li>
       {% else %}
         {% for event in events %}
           <li class=le-event>
-            <div class="le-cell le-cell-date">
-              {% event_time event order:"date" date_format:"l n/j"  %}
-            </div>
+
             <div class="le-cell le-cell-title">
               <a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a>
+            </div>
+            <div class="le-cell le-cell-date">
+              {% event_time event order:"date" date_format:settings.date_format  %}
+              {% if show_date_ranges and event.has_many_future_instances %}
+                - {{ event.last_instance.starts_at | date:settings.date_format }}
+              {% endif %}
             </div>
           </li>
         {% endfor %}
