@@ -62,105 +62,109 @@
   </script>
 {% endif %}
 <style>
-  .template-4 .lwn {
+  .template-5 .lwn {
     font-weight:normal;
   }
-  .template-4  .le-photo {
-    float:right;
-    margin:0 0 0 10px;
-  }
-  .template-4 .le-event,
-  .template-4 .le-list {
+  .template-5 .le-event,
+  .template-5 .le-list {
     list-style:none;
     list-style-image:none;
     margin:0;
     padding:0;
   }
-  .template-4  .le-list {
+  .template-5  .le-list {
     display:flex;
     flex-direction:row;
     flex-wrap:wrap;
     margin:0 -20px;
   }
-  .template-4  .le-event {
+  .template-5  .le-event {
     padding: 0 20px;
     width:100%;
   }
   @media screen and (min-width:768px) {
-    .template-4  .le-event {
+    .template-5  .le-event {
       width:50%;
     }
   }
   @media screen and (min-width:960px) {
-    .template-4  .le-event {
-      width:25%;
+    .template-5  .le-event {
+      width:50%;
     }
   }
 
 
-  .template-4  .le-wrapper {
+  .template-5  .le-wrapper {
     margin-bottom:20px;
     overflow:hidden;
   }
-  .template-4 .le-date-wrapper {
+  .template-5 .le-date-wrapper {
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    width:100%;
-    margin-bottom:20px;
+    width:40%;
+    padding:10px;
   }
-  .template-4  .le-date {
-    width: 70px;
-    margin-right: 10px;
+  .template-5  .le-date {
+    width: 100%;
     text-align: center;
-    text-transform: uppercase;
-    background-color: #f7f7f7;
   }
-  .template-4  .le-date-month {
-    background-color: #D24637;
-    color: #fff;
-    font-weight: bold;
-    font-size: 14px;
-    padding:5px;
+  .template-5  .le-date-month {
+    font-size:150%;
   }
-  .template-4  .le-date-day {
-    font-weight: bold;
-    font-size: 21px;
-    border: 1px solid #e7e7e7;
-    border-top: none;
-    color: #333;
-    padding:10px 5px;
+  .template-5  .le-date-day {
+    font-size:250%;
   }
-  .template-4  .le-event-content {
+  .template-5  .le-event-content {
     overflow:hidden;
-    text-align:center;
+    padding:10px 0 0;
   }
-  .template-4  .le-date-time,
-  .template-4  .le-description {
+  .template-5  .le-date-time,
+  .template-5  .le-description {
     font-size: 85%;
     padding-top: 5px;
   }
-  .template-4  img.le-image {
+  .template-5  img.le-image {
     width:50px;
     height:auto;
   }
   @media screen and (min-width:768px) {
-    .template-4  img.le-image {
+    .template-5  img.le-image {
       width:80px;
       height:auto;
     }
   }
-  .template-4 .le-event-title {
+  .template-5 .le-event-title {
     font-weight:bold;
     font-size:150%;
   }
-  .le-no-events {
+  .template-5 .le-no-events {
     padding:20px;
+  }
+  .template-5 .le-date-image {
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    align-items:center;
+    width:100%;
+    background:#202020;
+    color:#fff;
+  }
+  .template-5 .le-photo {
+    width:60%;
+  }
+  .template-5 .le-photo img {
+    display:block;
+    width:100%;
+    height: auto;
+  }
+  .template-5 .le-time-location {
+    padding-top:10px;
   }
 </style>
 {% if current_user %}<!-- logged in -->{% endif %}
-<div class="template-4">
+<div class="template-5">
   <div class="localist-wrapper">
     <ul id="lwe" class="le-list">
       {% if events == empty %}
@@ -170,10 +174,17 @@
           <li class="le-event">
             <div class="le-wrapper">
 
-              <div class="le-date-wrapper">
-                <div class="le-date">
-                  <div class="le-date-month">{% event_time event order:"date" date_format:"M"  %}</div>
-                  <div class="le-date-day">{% event_time event order:"date" date_format:"j"  %}</div>
+              <div class="le-date-image">
+                <div class="le-photo">
+                  <a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:"Huge" class:'le-image' %}</a>
+                </div>
+                <div class="le-date-wrapper">
+                  <div class="le-date">
+
+                    <div class="le-date-day">{% event_time event order:"date" date_format:"j"  %}</div>
+                    <div class="le-date-month">{% event_time event order:"date" date_format:"M"  %}</div>
+
+                  </div>
                 </div>
               </div>
 
@@ -187,6 +198,12 @@
               {% if settings.expand_descriptions %}<div class=lww style="display:none">{% endif %}
               {% unless settings.hide_descriptions %}
                 <div class="le-description">
+
+
+
+
+
+                  {% item_description event %}
 
                   <div class="le-time-location">
                   {% if settings.show_times %}
@@ -210,8 +227,6 @@
                   </div>
 
 
-
-                  {% item_description event %}
                 </div>
               {% endunless %}
             {% if settings.expand_descriptions %}</div>{% endif %}
