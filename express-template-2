@@ -138,8 +138,8 @@
               {% unless settings.hide_images %}<div class=le-photo><span class=lwi0><a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}>{% photo_for event size:"medium" class:'le-image' %}</a></span></div>{% endunless %}
 
               <div class="le-date">
-                <div class="le-date-month">{% event_time event order:"date" date_format:"M"  %}</div>
-                <div class="le-date-day">{% event_time event order:"date" date_format:"j"  %}</div>
+                <div class="le-date-month">{% event_time event order:"date" date_format:"M" date_format_year:"M"  %}</div>
+                <div class="le-date-day">{% event_time event order:"date" date_format:"j" date_format_year:"j"  %}</div>
               </div>
 
               <div class="le-event-content">
