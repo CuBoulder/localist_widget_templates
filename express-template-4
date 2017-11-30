@@ -158,6 +158,9 @@
   .le-no-events {
     padding:20px;
   }
+  .view-event-details {
+    font-size:75%;
+  }
 </style>
 {% if current_user %}<!-- logged in -->{% endif %}
 <div class="template-4">
@@ -214,7 +217,7 @@
                   {% item_description event %}
                 </div>
               {% endunless %}
-            {% if settings.expand_descriptions %}</div>{% endif %}
+            {% if settings.expand_descriptions %}<p><a href="{{ event.url }}" class="view-event-details">View Details</a></p></div>{% endif %}
               </div>
 
             </div>
