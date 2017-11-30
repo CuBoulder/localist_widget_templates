@@ -181,8 +181,8 @@
                 <div class="le-date-wrapper">
                   <div class="le-date">
 
-                    <div class="le-date-day">{% event_time event order:"date" date_format:"j"  %}</div>
-                    <div class="le-date-month">{% event_time event order:"date" date_format:"M"  %}</div>
+                    <div class="le-date-day">{% event_time event order:"date" date_format:"j" date_format_year:"j" %}</div>
+                    <div class="le-date-month">{% event_time event order:"date" date_format:"M" date_format_year:"M" %}</div>
 
                   </div>
                 </div>
