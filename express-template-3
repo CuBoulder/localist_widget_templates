@@ -119,7 +119,7 @@
               <a href="{{ event.url }}"{% if settings.target_blank %} target="_blank"{% endif %}{% if settings.expand_descriptions %} onclick="mc_$$ID$$_util.toggle(this); return false;"{% endif %}>{{ event.name }}</a>
             </div>
             <div class="le-cell le-cell-date">
-              {% event_time event order:"date" date_format:settings.date_format  %}
+              {% event_time event order:"date" date_format:"M j" date_format_year:"M j"  %}
               {% if show_date_ranges and event.has_many_future_instances %}
                 - {{ event.last_instance.starts_at | date:settings.date_format }}
               {% endif %}
