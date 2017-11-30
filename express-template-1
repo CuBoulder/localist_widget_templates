@@ -90,6 +90,9 @@
     width:50px;
     height:auto;
   }
+  .view-event-details {
+    font-size:75%;
+  }
   @media screen and (min-width:768px) {
     .template-1 img.le-image {
       width:80px;
@@ -145,7 +148,7 @@
                   {% item_description event %}
                 </div>
               {% endunless %}
-            {% if settings.expand_descriptions %}</div>{% endif %}
+            {% if settings.expand_descriptions %}<p><a href="{{ event.url }}" class="view-event-details">View Details</a></p></div>{% endif %}
 
             </div>
 
