@@ -232,7 +232,7 @@
 
                 </div>
               {% endunless %}
-            {% if settings.expand_descriptions %}<p><a href="{{ event.url }}" class="view-event-details">View Details</a></p></div>{% endif %}
+            {% if settings.expand_descriptions %}<p><a href="{{ event.url }}" {% if settings.target_blank %} target="_blank"{% endif %} class="view-event-details">View Details</a></p></div>{% endif %}
               </div>
 
             </div>
